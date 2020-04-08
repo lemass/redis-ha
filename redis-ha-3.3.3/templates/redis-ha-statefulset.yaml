@@ -49,6 +49,8 @@ spec:
       securityContext:
 {{ toYaml .Values.securityContext | indent 8 }}
       serviceAccountName: {{ template "redis-ha.serviceAccountName" . }}
+      imagePullSecrets:
+      - name: hk-artifactory
       initContainers:
       {{- if .Values.sysctlImage.enabled }}
       - name: init-sysctl
@@ -135,13 +137,13 @@ spec:
         livenessProbe:
           exec:
             command: [ "sh", "/probes/readiness.sh", "{{ .Values.redis.port }}"]
-          initialDelaySeconds: 60
-          periodSeconds: 15
+          initialDelaySeconds: 15
+          periodSeconds: 5
         readinessProbe:
           exec:
             command: ["sh", "/probes/readiness.sh", "{{ .Values.redis.port }}"]
-          initialDelaySeconds: 60
-          periodSeconds: 15
+          initialDelaySeconds: 15
+          periodSeconds: 5
         resources:
 {{ toYaml .Values.redis.resources | indent 10 }}
         ports:

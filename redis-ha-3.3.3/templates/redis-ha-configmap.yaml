@@ -13,8 +13,6 @@ data:
 {{ .Values.redis.customConfig | indent 4 }}
 {{- else }}
     dir "/data"
-    save ""
-    appendonly no
     {{- range $key, $value := .Values.redis.config }}
     {{ $key }} {{ $value }}
     {{- end }}
